@@ -90,3 +90,8 @@ ENV/
 
 # IDE
 .idea/
+
+# pytest
+.cache/
+.coverage
+htmlcov/
