@@ -87,3 +87,11 @@ ENV/
 
 # Rope project settings
 .ropeproject
+
+# IDE
+.idea/
+
+# pytest
+.cache/
+.coverage
+htmlcov/
