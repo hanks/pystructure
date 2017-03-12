@@ -20,7 +20,7 @@ import six
 from docopt import docopt
 
 
-__VERSION__ = "PYStructure 1.0.0"
+__VERSION__ = "PYStructure 1.1.0"
 
 class PYSymbol(object):
     GLOBAL_VAR = "v"

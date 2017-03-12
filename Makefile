@@ -1,4 +1,4 @@
-.PHONY: cut-release build upload test clean
+.PHONY: cut-release build release test clean
 
 test:
 	tox
@@ -8,9 +8,13 @@ cut-release:
 
 build:
 	rm -rf dist
+	rm -rf pystructure.egg-info
 	python setup.py sdist bdist_wheel
 
-upload:
+release:
+	rm -rf dist
+	rm -rf pystructure.egg-info
+	python setup.py sdist bdist_wheel
 	twine upload dist/*
 
 clean:
