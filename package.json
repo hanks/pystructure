@@ -1,6 +1,6 @@
 {
   "name": "pystructure",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "A tiny tool to help reading source code with showing structure of python source code",
   "main": "index.js",
   "directories": {
