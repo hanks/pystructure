@@ -1,20 +1,23 @@
 {
   "name": "pystructure",
   "version": "1.0.0",
-  "description": "",
+  "description": "A tiny tool to help reading source code with showing structure of python source code",
   "main": "index.js",
   "directories": {
     "test": "tests"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "release": "standard-version"
   },
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@bitbucket.org/hanks315/pystructure.git"
+    "url": "git+https://github.com/hanks/pystructure.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "homepage": "https://bitbucket.org/hanks315/pystructure#readme"
+  "bugs": {
+    "url": "https://github.com/hanks/pystructure/issues"
+  },
+  "homepage": "https://github.com/hanks/pystructure#readme"
 }
