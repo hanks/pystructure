@@ -22,7 +22,10 @@ from docopt import docopt
 
 __VERSION__ = "PYStructure 1.1.0"
 
+
 class PYSymbol(object):
+    """Symbol definitions for source code
+    """
     GLOBAL_VAR = "v"
     FUNCTION = "f"
     CLASS = "c"
@@ -32,6 +35,9 @@ class PYSymbol(object):
 
 
 class PYStructureVisitor(object):
+    """Use visitor pattern here, and define visitor method to each
+    node in source code
+    """
     PREFIX = "visit_"
     LITERAL_VALUE_PREFIX = "visit_literal_"
 
@@ -39,6 +45,14 @@ class PYStructureVisitor(object):
         self.structure = OrderedDict()
 
     def visit(self, node_list):
+        """Entry visitor method for all nodes, a delegate to call other concrete visitor implementation
+
+        Args:
+            node_list: list, ast node object list
+
+        Returns:
+            OrderedDict, result from visitor methods
+        """
         for node in node_list:
             result = self._get_visit_result(node)
 
@@ -48,6 +62,14 @@ class PYStructureVisitor(object):
         return self.structure
 
     def visit_Assign(self, node):
+        """Visitor method for the Assign node
+
+        Args:
+            node: object, ast Assign node
+
+        Returns:
+            dict, result from parsing the Assign node
+        """
         result = {
             node.lineno: {
                 "type": PYSymbol.GLOBAL_VAR,
@@ -66,6 +88,14 @@ class PYStructureVisitor(object):
         return result
 
     def visit_ClassDef(self, node):
+        """Visitor method for the ClassDef node
+
+        Args:
+            node: object, ast ClassDef node
+
+        Returns:
+            dict, result from parsing the ClassDef node
+        """
         result = {
             node.lineno: {
                 "type": PYSymbol.CLASS,
@@ -89,6 +119,14 @@ class PYStructureVisitor(object):
         return result
 
     def visit_FunctionDef(self, node):
+        """Visitor method for the FunctionDef node
+
+        Args:
+            node: object, ast FunctionDef node
+
+        Returns:
+            dict, result from parsing the FunctionDef node
+        """
         result = {
             node.lineno: {
                 "type": PYSymbol.FUNCTION,
@@ -113,9 +151,25 @@ class PYStructureVisitor(object):
         return result
 
     def visit_literal_Num(self, node):
+        """Visitor method for the literal Num node
+
+        Args:
+            node: object, ast literal Num node
+
+        Returns:
+            dict, result from parsing the literal Num node
+        """
         return node.n
 
     def visit_literal_Name(self, node):
+        """Visitor method for the literal Name node
+
+        Args:
+            node: object, ast literal Name node
+
+        Returns:
+            dict, result from parsing the literal Name node
+        """
         result = node.id
 
         try:
@@ -126,21 +180,62 @@ class PYStructureVisitor(object):
         return result
 
     def visit_literal_Str(self, node):
+        """Visitor method for the literal Str node
+
+        Args:
+            node: object, ast literal Str node
+
+        Returns:
+            dict, result from parsing the literal Str node
+        """
         return node.s
 
     def visit_literal_List(self, node):
+        """Visitor method for the literal List node
+
+        Args:
+            node: object, ast literal List node
+
+        Returns:
+            dict, result from parsing the literal List node
+        """
         return self._get_literal_value_list(node.elts)
 
     def visit_literal_Tuple(self, node):
+        """Visitor method for the literal Tuple node
+
+        Args:
+            node: object, ast literal Tuple node
+
+        Returns:
+            dict, result from parsing the literal Tuple node
+        """
         return self._get_literal_value_list(node.elts)
 
     def visit_literal_Dict(self, node):
+        """Visitor method for the literal Dict node
+
+        Args:
+            node: object, ast literal Dict node
+
+        Returns:
+            dict, result from parsing the literal Dict node
+        """
         keys = self._get_literal_value_list(node.keys)
         values = self._get_literal_value_list(node.values)
 
         return dict(zip(keys, values))
 
     def _get_visit_result(self, node, prefix=PREFIX):
+        """Delegation to get result from parsing node, to call according visitor method
+
+        Args:
+            node: object, ast node
+            prefix: str, prefix to generate visitor method
+
+        Returns:
+            dict, result from each visitor method
+        """
         node_class_name = node.__class__.__name__
         func_name = "{}{}".format(prefix, node_class_name)
         result = None
@@ -152,6 +247,14 @@ class PYStructureVisitor(object):
         return result
 
     def _get_literal_value_list(self, node_list):
+        """Delegation to get result from parsing node list, to call according visitor method
+
+        Args:
+            node_list: list, ast node list
+
+        Returns:
+            list, result list from each visitor method
+        """
         literal_value_list = []
 
         for node in node_list:
@@ -161,6 +264,18 @@ class PYStructureVisitor(object):
         return literal_value_list
 
     def _build_func_signature(self, func_name, args_list, default_list, kwarg, vararg):
+        """Func signature builder for FunctionDef node
+
+        Args:
+            func_name: str, function name
+            args_list: list, function args list
+            default_list: list, function default parameter list
+            kwarg: dict, function kwarg, a=1, b=1
+            vararg: list, function vararg, a, b
+
+        Returns:
+
+        """
         formatted_args_list = args_list[:]
 
         if not args_list and not default_list and not kwarg and not vararg:
@@ -198,6 +313,11 @@ class PYStructureVisitor(object):
 
     @property
     def method_dict(self):
+        """Dict to store method name and method func key-value pair, like a cache
+
+        Returns:
+            func object, visitor function object
+        """
         visitor_func_dict = {}
         d = self.__class__.__dict__
 
@@ -209,14 +329,38 @@ class PYStructureVisitor(object):
 
 
 class StructureParser(object):
+    """Parser for the source code
+    """
     def __init__(self):
         self.body = None
         self.structure = None
 
     def accept(self, visitor):
+        """Set up visitor for parser
+
+        Args:
+            visitor: object, visitor object
+
+        Returns:
+            None
+
+        Side Effects:
+            Setup parse result for self.structure
+        """
         self.structure = visitor.visit(self.body)
 
     def load(self, src):
+        """Prepare source code for parsing
+
+        Args:
+            src: str, source code from file
+
+        Returns:
+            None
+
+        Side Effects:
+            Setup load result for self.body
+        """
         try:
             root = parse(src)
             self.body = root.body
@@ -224,12 +368,30 @@ class StructureParser(object):
             exit("parse error, please check, {}".format(str(e)))
 
     def export(self):
+        """Export structure information to a formatted output
+
+        Returns:
+            str, formatted structure str
+        """
         output = []
         self._format_structure(self.structure, 0, output)
 
         return "\n".join(output)
 
     def _format_structure(self, root, level=0, output=None):
+        """Format structure to a desired version
+
+        Args:
+            root: dict, structure object
+            level: int, using to control space using in each hierarchy level
+            output: list, result str list
+
+        Returns:
+            None
+
+        Side Effects:
+            set final result to output object
+        """
         if output is None:
             output = []
 
