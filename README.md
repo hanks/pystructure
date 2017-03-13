@@ -72,15 +72,13 @@ f main()
 
 # Contribution
 
-1. Fork the repository on GitHub.
-3. Make a branch off of master and commit your changes to it.
-3. Run the tests with tox
+1. Fork the repository on GitHub, and git clone to local.
+2. Create a virtualenv and then do `pip install -r requirements.txt` from within the directory.
+3. Run the tests with running command `tox`
    * Either use tox to build against all supported Python versions (if you have them installed) or use tox -e py{version}
    to test against a specific version, e.g., tox -e py27 or tox -e py33.
-4. Submit a Pull Request to the master branch on GitHub.
-
-If you’d like to have a development environment for `pystructure`, you should create a virtualenv and then do `pip install -e .`
-from within the directory.
+4. Make a branch off of master and commit your changes to it.
+5. Submit a Pull Request to the master branch on GitHub.
 
 # Lisence
 
