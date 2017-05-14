@@ -80,6 +80,6 @@ f main()
 4. Make a branch off of master and commit your changes to it.
 5. Submit a Pull Request to the master branch on GitHub.
 
-# Lisence
+# Licence
 
-MIT Lisence
+MIT Licence

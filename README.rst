@@ -99,10 +99,10 @@ If you’d like to have a development environment for ``pystructure``, you
 should create a virtualenv and then do ``pip install -e .`` from within
 the directory.
 
-Lisence
+Licence
 =======
 
-MIT Lisence
+MIT Licence
 
 .. |Build Status| image:: https://travis-ci.org/hanks/pystructure.svg?branch=master
    :target: https://travis-ci.org/hanks/pystructure
